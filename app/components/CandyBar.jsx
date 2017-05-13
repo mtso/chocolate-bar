@@ -2,7 +2,7 @@ import React from 'react'
 
 const stylesheet = {
   width: 440,
-  height: 'auto',
+  height: 320, //'auto',
 }
 
 export const CandyBar = (props) => (

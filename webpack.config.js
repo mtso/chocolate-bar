@@ -1,11 +1,4 @@
 const path = require('path')
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
-
-// const injectIndex = new HtmlWebpackPlugin({
-//   title: 'react authentication',
-//   filename: 'index.html',
-//   inject: 'body',
-// })
 
 module.exports = {
   entry: path.resolve(__dirname, 'client'),
@@ -28,7 +21,4 @@ module.exports = {
       }
     ],
   },
-  // plugins: [
-  //   injectIndex,
-  // ],
 }

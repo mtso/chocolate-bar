@@ -7,7 +7,7 @@ export const SignIn = (props) => {
     props.handleSignin(e, username)
   }
   return (
-    <form onSubmit={handleSignin}>
+    <form onSubmit={handleSignin} method='POST'>
       <input type='text' name='username' placeholder='Username' />
       <input type='password' name='password' placeholder='Password' />
       <input type='submit' value='Sign In' />

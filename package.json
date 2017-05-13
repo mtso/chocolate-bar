@@ -2,7 +2,7 @@
   "name": "chocolate-auth",
   "version": "0.1.0",
   "scripts": {
-    "start": "webpack && babel-watch server.js --presets react,es2015"
+    "start": "babel-watch server.js --presets react,es2015"
   },
   "dependencies": {
     "body-parser": "^1.17.1",

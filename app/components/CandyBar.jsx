@@ -6,7 +6,7 @@ const stylesheet = {
 }
 
 export const CandyBar = (props) => (
-	<img 
+  <img 
     src={props.src}
     style={stylesheet}
   />

@@ -2,9 +2,13 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const path = require('path')
+const webpack = require('webpack')
+const webpackConfig = require('./webpack.config')
+
 import React from 'react'
 import ReactDomServer, { renderToString } from 'react-dom/server'
 
+const port = process.env.PORT || 3750
 import { App } from './app/App.jsx'
 
 app.set('view engine', 'ejs')
@@ -19,7 +23,11 @@ app.get('/', (req, res) => {
   res.render('index', { markup })
 })
 
-const port = process.env.PORT || 3750
-app.listen(port, () => console.log('listening on', port))
+webpack(webpackConfig, (err, stats) => {
+  if (err || stats.hasErrors()) {
+    console.error(err)
+  }
+  app.listen(port, () => console.log('listening on', port))
+})
 
 module.exports = app

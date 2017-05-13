@@ -16,9 +16,7 @@
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "redis": "^2.7.1",
-    "superagent": "^3.5.2"
-  },
-  "devDependencies": {
+    "superagent": "^3.5.2",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
@@ -26,6 +24,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-watch": "^2.0.6",
     "webpack": "^2.5.1",
-    "webpack-dev-server": "^2.4.5"
-  }
+    "webpack-dev-server": "^2.4.5"  
+  },
+  "devDependencies": {}
 }

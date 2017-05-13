@@ -4,7 +4,8 @@ export const SignIn = (props) => {
   const handleSignin = (e) => {
     e.preventDefault()
     let username = document.getElementsByName('username')[0].value
-    props.handleSignin(e, username)
+    let password = document.getElementsByName('password')[0].value
+    props.handleSignin(e, username, password)
   }
   return (
     <form onSubmit={handleSignin} method='POST'>

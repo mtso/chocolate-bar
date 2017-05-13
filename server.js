@@ -75,8 +75,23 @@ app.post('/login', (req, res, next) => {
   })(req, res, next)
 })
 
+app.get('/logout', (req, res) => {
+  req.logout()
+  res.json({ success: true, isLoggedIn: false })
+})
+
+app.post('/', (req, res) => {
+  if (req.user) {
+    res.json({ isLoggedIn: true, username: req.user.username })
+  } else {
+    res.json({ isLoggedIn: false })
+  }
+})
+
 app.get('/', (req, res) => {
-  const markup = renderToString(<App />)
+  const markup = renderToString(
+    <App username={req.user ? req.user.username : null} />
+  )
   res.render('index', { markup })
 })
 

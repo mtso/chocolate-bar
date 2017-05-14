@@ -4,6 +4,29 @@ import { CandyBar } from './components/CandyBar'
 import { SignIn } from './components/SignIn'
 import { Home } from './components/Home'
 
+import { Route, Link } from 'react-router-dom'
+import { AuthenticationForm } from './components/AuthenticationForm'
+
+const HomePage = () => (
+  <CandyBar src='img/chocolate-bar.png' />
+)
+
+const submitSignin = (e) => {
+  console.log('signing in')
+  e.preventDefault()
+}
+
+export const RoutedApp = () => (
+  <div>
+    <Link to='/'>Home</Link> <Link to='/signin'>Sign In</Link>
+
+    <Route exact path='/' />
+    <Route path='/signin' render={() => (
+      <AuthenticationForm submitTitle='Sign In' onSubmit={submitSignin} />
+    )} />
+  </div>
+)
+
 export class App extends Component {
   constructor(props) {
     super(props)

@@ -7,7 +7,7 @@ const RedisStore = require('connect-redis')(session)
 const redis = require('redis')
 const client = redis.createClient(process.env.REDIS_URL)
 const webpack = require('webpack')
-const webpackConfig = require('./webpack.config')
+const webpackConfig = require('../webpack.prod')
 const passport = require('passport')
 const Strategy = require('passport-local').Strategy
 
@@ -15,7 +15,7 @@ import React from 'react'
 import { renderToString } from 'react-dom/server'
 
 const port = process.env.PORT || 3750
-import { App } from './app/App.jsx'
+import { App } from '../app/App.jsx'
 
 // Configure passport.
 
@@ -44,7 +44,7 @@ passport.deserializeUser((username, done) => {
 })
 
 app.set('view engine', 'ejs')
-app.set('views', path.resolve(__dirname, 'app'))
+app.set('views', path.resolve(__dirname, 'views'))
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
@@ -54,8 +54,8 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
 }))
-app.use(express.static(path.resolve(__dirname, 'dist')))
-app.use(express.static(path.resolve(__dirname, 'static')))
+app.use(express.static(path.resolve(__dirname, '..', 'dist')))
+app.use(express.static(path.resolve(__dirname, '..', 'static')))
 app.use(passport.initialize())
 app.use(passport.session())
 

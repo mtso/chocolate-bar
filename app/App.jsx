@@ -6,14 +6,6 @@ import { SignIn } from './components/SignIn'
 import { Home } from './components/Home'
 import { AuthenticationForm } from './components/AuthenticationForm'
 
-// const HomePage = () => (
-//   <div>
-//     <CandyBar src='img/chocolate-bar.png' />
-//     <AuthenticationForm submitTitle='Sign Up' />
-//     <Link to='/signin'>Already have an account? Sign in.</Link>
-//   </div>
-// )
-
 const MakeSignup = (handleSignup) => {
   return () => (
     <div>
@@ -42,7 +34,7 @@ const MakeUnwrappedPage = (username, handleLogout) => {
   return () => (
     <div>
       <Link to='/'>
-        <CandyBar src='img/chocolate-bar-opened.png' />
+        <CandyBar src='img/chocolate-bar-unwrapped.png' />
       </Link>
       <Home
         username={username} 
@@ -195,7 +187,7 @@ export class App extends Component {
   }
   render() {
     const img = this.state.username
-      ? 'img/chocolate-bar-opened.png' 
+      ? 'img/chocolate-bar-unwrapped.png' 
       : 'img/chocolate-bar.png'
 
     return (

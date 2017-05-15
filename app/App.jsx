@@ -6,13 +6,23 @@ import { SignIn } from './components/SignIn'
 import { Home } from './components/Home'
 import { AuthenticationForm } from './components/AuthenticationForm'
 
-const HomePage = () => (
-  <div>
-    <CandyBar src='img/chocolate-bar.png' />
-    <AuthenticationForm submitTitle='Sign Up' />
-    <Link to='/signin'>Already have an account? Sign in.</Link>
-  </div>
-)
+// const HomePage = () => (
+//   <div>
+//     <CandyBar src='img/chocolate-bar.png' />
+//     <AuthenticationForm submitTitle='Sign Up' />
+//     <Link to='/signin'>Already have an account? Sign in.</Link>
+//   </div>
+// )
+
+const MakeSignup = (handleSignup) => {
+  return () => (
+    <div>
+      <CandyBar src='img/chocolate-bar.png' />
+      <AuthenticationForm submitTitle='Sign Up' onSubmit={handleSignup} />
+      <Link to='/signin'>Already have an account? Sign in.</Link>
+    </div>
+  )
+}
 
 const MakeHomePage = (username, handleLogout) => {
   return () => (
@@ -60,6 +70,7 @@ export class RoutedApp extends Component {
     }
     this.handleLogout = this.handleLogout.bind(this)
     this.handleSignin = this.handleSignin.bind(this)
+    this.handleSignup = this.handleSignup.bind(this)
   }
   handleLogout(e) {
     e.preventDefault()
@@ -96,13 +107,30 @@ export class RoutedApp extends Component {
         }
       })
   }
+  handleSignup(e) {
+    e.preventDefault()
+    let username = e.target.elements['username'].value
+    let password = e.target.elements['password'].value
+    request
+      .post('/signup')
+      .send({ username, password })
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        if (err || !res.body) { return console.error(err) }
+        if (res.body.success) {
+          this.setState({
+            username,
+          })
+        }
+      })
+  }
   render() {
     return (
       <div>
         <Route exact path='/' component={
           this.state.username 
             ? MakeHomePage(this.state.username, this.handleLogout) 
-            : HomePage
+            : MakeSignup(this.handleSignup)
         } />
         <Route path='/signin' component={
           this.state.username

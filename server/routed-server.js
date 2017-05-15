@@ -24,9 +24,9 @@ passport.use(new Strategy(
   (username, password, done) => {
     client.get(username, (err, storedPass) => {
       if (err) { return done(err) }
-      if (!storedPass) {
-        return client.set(username, password, (err) => done(err, { username }))
-      }
+      // if (!storedPass) {
+      //   return client.set(username, password, (err) => done(err, { username }))
+      // }
       if (storedPass != password) { return done(null, false) }
       return done(null, { username })
     })
@@ -60,20 +60,28 @@ app.use(express.static(path.resolve(__dirname, '..', 'static')))
 app.use(passport.initialize())
 app.use(passport.session())
 
-// app.post('/signup', (req, res, next) => {
-//   passport.authenticate('local', (err, user) => {
-//     if (err) { return next(err) }
-//     if (user) {
-//       return res.json({
-//         success: false,
-//         message: user.username + ' already exists'
-//       })
-//     } else {
-
-//     }
-
-//   })
-// })
+app.post('/signup', (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    if (err) { return next(err) }
+    if (user) {
+      return res.json({
+        success: false,
+        message: user.username + ' already exists'
+      })
+    } else {
+      client.set(req.body.username, req.body.password, (err, result) => {
+        if (err) { return next(err) }
+        req.logIn({ username: req.body.username }, (err) => {
+          if (err) { return next(err) }
+          res.json({
+            success: true,
+            message: req.body.username + ' joined'
+          })
+        })
+      })
+    }
+  })(req, res, next)
+})
 
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {

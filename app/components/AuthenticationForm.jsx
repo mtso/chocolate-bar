@@ -12,6 +12,6 @@ export const AuthenticationForm = (props) => (
       name='password'
       placeholder={props.passwordPlaceholder || 'Password'}
     />
-    <input type='submit' value={props.buttonTitle || 'Submit'} />
+    <input type='submit' value={props.submitTitle || 'Submit'} />
   </form>
 )

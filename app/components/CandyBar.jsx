@@ -2,12 +2,14 @@ import React from 'react'
 
 const stylesheet = {
   width: 440,
-  height: 320, //'auto',
+  height: 320,
 }
 
-export const CandyBar = (props) => (
+const CandyBar = ({ src }) => (
   <img 
-    src={props.src}
+    src={src}
     style={stylesheet}
   />
 )
+
+export default CandyBar

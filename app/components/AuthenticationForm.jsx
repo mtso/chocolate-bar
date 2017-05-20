@@ -1,17 +1,25 @@
 import React from 'react'
 
-export const AuthenticationForm = (props) => (
-  <form onSubmit={props.onSubmit} method={props.method || 'POST'}>
+const AuthenticationForm = ({ 
+  onSubmit, 
+  usernamePlaceholder, 
+  passwordPlaceholder,
+  submitTitle,
+  method,
+}) => (
+  <form onSubmit={onSubmit} method={method || 'POST'}>
     <input
       type='text'
       name='username'
-      placeholder={props.usernamePlaceholder || 'Username'}
+      placeholder={usernamePlaceholder || 'Username'}
     />
     <input
       type='password'
       name='password'
-      placeholder={props.passwordPlaceholder || 'Password'}
+      placeholder={passwordPlaceholder || 'Password'}
     />
-    <input type='submit' value={props.submitTitle || 'Submit'} />
+    <input type='submit' value={submitTitle || 'Submit'} />
   </form>
 )
+
+export default AuthenticationForm

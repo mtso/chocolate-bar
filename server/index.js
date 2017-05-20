@@ -7,15 +7,16 @@ const RedisStore = require('connect-redis')(session)
 const redis = require('redis')
 const client = redis.createClient(process.env.REDIS_URL)
 const webpack = require('webpack')
-const webpackConfig = require('../webpack.prod')
+const webpackConfig = require('../webpack.config')
 const passport = require('passport')
 const Strategy = require('passport-local').Strategy
 
 import React from 'react'
 import { renderToString } from 'react-dom/server'
+import { StaticRouter } from 'react-router'
 
 const port = process.env.PORT || 3750
-import { App } from '../app/App.jsx'
+import { RoutedApp } from '../app/App.jsx'
 
 // Configure passport.
 
@@ -23,9 +24,6 @@ passport.use(new Strategy(
   (username, password, done) => {
     client.get(username, (err, storedPass) => {
       if (err) { return done(err) }
-      if (!storedPass) {
-        return client.set(username, password, (err) => done(err, { username }))
-      }
       if (storedPass != password) { return done(null, false) }
       return done(null, { username })
     })
@@ -59,9 +57,32 @@ app.use(express.static(path.resolve(__dirname, '..', 'static')))
 app.use(passport.initialize())
 app.use(passport.session())
 
+app.post('/signup', (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    if (err) { return next(err) }
+    if (user) {
+      return res.json({
+        success: false,
+        message: user.username + ' already exists'
+      })
+    } else {
+      client.set(req.body.username, req.body.password, (err, result) => {
+        if (err) { return next(err) }
+        req.logIn({ username: req.body.username }, (err) => {
+          if (err) { return next(err) }
+          res.json({
+            success: true,
+            message: req.body.username + ' joined'
+          })
+        })
+      })
+    }
+  })(req, res, next)
+})
+
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
-    if (err) return next(err)
+    if (err) { return next(err) }
     if (!user) {
       return res.json({success: false})
     }
@@ -88,11 +109,19 @@ app.post('/', (req, res) => {
   }
 })
 
-app.get('/', (req, res) => {
+app.get('/*', (req, res) => {
+  const context = {}
   const markup = renderToString(
-    <App username={req.user ? req.user.username : null} />
+    <StaticRouter location={req.url} context={context}>
+      <RoutedApp username={req.user ? req.user.username : null} />
+    </StaticRouter>
   )
-  res.render('index', { markup })
+  if (context.url) {
+    res.writeHead(302, { Location: context.url })
+    res.end()
+  } else {
+    res.render('index', { markup })
+  }
 })
 
 // Render client on startup

@@ -1,5 +1,13 @@
 const path = require('path')
 const fs = require('fs')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+
+const copyViews = new CopyWebpackPlugin([
+  { 
+    from: path.resolve(__dirname, 'server', 'views'),
+    to: path.resolve(__dirname, 'build', 'views'),
+  },
+])
 
 const externals = fs
   .readdirSync('node_modules')
@@ -68,5 +76,8 @@ module.exports = [
         }
       ],
     },
-  }
+    plugins: [
+      copyViews,
+    ],
+  },
 ]

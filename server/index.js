@@ -6,8 +6,6 @@ const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 const redis = require('redis')
 const client = redis.createClient(process.env.REDIS_URL)
-const webpack = require('webpack')
-const webpackConfig = require('../webpack.config')
 const passport = require('passport')
 const Strategy = require('passport-local').Strategy
 
@@ -126,11 +124,6 @@ app.get('/*', (req, res) => {
 
 // Render client on startup
 
-webpack(webpackConfig, (err, stats) => {
-  if (err || stats.hasErrors()) {
-    console.error(err)
-  }
-  app.listen(port, () => console.log('listening on', port))
-})
+app.listen(port, () => console.log('listening on', port))
 
 module.exports = app
